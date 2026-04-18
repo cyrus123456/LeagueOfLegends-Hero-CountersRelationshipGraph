@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "honorofkingsherocounters",
+  "name": "leagueoflegendsherocountersrelationshipgraph",
   "compatibility_date": "2026-04-03",
   "observability": {
     "enabled": true
