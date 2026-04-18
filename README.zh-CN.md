@@ -9,8 +9,8 @@
 
 ## 在线演示
 
-- **GitHub Pages**: [点击查看](https://cyrus123456.github.io/HonorOfKings-Hero-Counters/)
-- **Cloudflare Workers**: [点击查看](https://honorofkingsherocounters.b8c72dzp5t.workers.dev/)
+- **GitHub Pages**: [点击查看](https://cyrus123456.github.io/LeagueOfLegends-Hero-CountersRelationshipGraph/)
+- **Cloudflare Workers**: [点击查看](https://leagueoflegendsherocountersrelationshipgraph.b8c72dzp5t.workers.dev/)
 
 直接访问上方链接即可体验完整功能！
 
