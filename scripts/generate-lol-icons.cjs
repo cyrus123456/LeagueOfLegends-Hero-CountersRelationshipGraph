@@ -13,7 +13,7 @@ async function main() {
   const b64Path = 'C:\\Users\\73476\\.qoder\\cache\\projects\\LeagueOfLegends-Hero-CountersRelationshipGraph-5620db34\\agent-tools\\573e8132\\6ae4e6a7.txt';
   console.log('读取 base64 数据...');
   const rawContent = fs.readFileSync(b64Path, 'utf-8');
-
+  
   // 提取纯 base64 数据 - Playwright 输出格式包含前缀和后缀
   const base64Match = rawContent.match(/"([A-Za-z0-9+/=]+)/);
   if (!base64Match) {
@@ -21,10 +21,10 @@ async function main() {
     process.exit(1);
   }
   const base64Data = base64Match[1];
-
+  
   const originalBuf = Buffer.from(base64Data, 'base64');
   console.log(`原始数据大小: ${originalBuf.length} bytes`);
-
+  
   // 验证 PNG header
   const header = originalBuf.slice(0, 4).toString('hex');
   if (header !== '89504e47') {

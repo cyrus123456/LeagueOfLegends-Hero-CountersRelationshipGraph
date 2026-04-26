@@ -2425,19 +2425,19 @@ const ForceGraph = ({
                   <div className="flex items-center justify-center gap-6 px-2">
                     <div className="flex flex-col items-center gap-1">
                       <div className="w-10 h-10 rounded-full overflow-hidden ring-2 ring-red-500/50">
-                        <img src="https://game.gtimg.cn/images/yxzj/img201606/heroimg/112/112.jpg" alt="" className="w-full h-full object-cover" />
+                        <img src="https://game.gtimg.cn/images/lol/act/img/champion/Annie.png" alt="" className="w-full h-full object-cover" />
                       </div>
                       <span className="text-[0.5625rem] text-red-400 font-medium">{t('nodeSizeLv3')}</span>
                     </div>
                     <div className="flex flex-col items-center gap-1">
                       <div className="w-7 h-7 rounded-full overflow-hidden ring-2 ring-orange-500/50">
-                        <img src="https://game.gtimg.cn/images/yxzj/img201606/heroimg/112/112.jpg" alt="" className="w-full h-full object-cover" />
+                        <img src="https://game.gtimg.cn/images/lol/act/img/champion/Annie.png" alt="" className="w-full h-full object-cover" />
                       </div>
                       <span className="text-[0.5625rem] text-orange-400 font-medium">{t('nodeSizeLv2')}</span>
                     </div>
                     <div className="flex flex-col items-center gap-1">
                       <div className="w-5 h-5 rounded-full overflow-hidden ring-2 ring-slate-500/50 opacity-70">
-                        <img src="https://game.gtimg.cn/images/yxzj/img201606/heroimg/112/112.jpg" alt="" className="w-full h-full object-cover" />
+                        <img src="https://game.gtimg.cn/images/lol/act/img/champion/Annie.png" alt="" className="w-full h-full object-cover" />
                       </div>
                       <span className="text-[0.5625rem] text-slate-400 font-medium">{t('nodeSizeLv1')}</span>
                     </div>
@@ -2451,7 +2451,7 @@ const ForceGraph = ({
                     <div className="flex items-center gap-2">
                       <div className="flex items-center">
                         <div className="w-6 h-6 rounded-full overflow-hidden ring-2 ring-red-500/50">
-                          <img src="https://game.gtimg.cn/images/yxzj/img201606/heroimg/112/112.jpg" alt="" className="w-full h-full object-cover" />
+                          <img src="https://game.gtimg.cn/images/lol/act/img/champion/Annie.png" alt="" className="w-full h-full object-cover" />
                         </div>
                         <svg className="w-10 h-3 -mx-1" viewBox="0 0 40 12">
                           <defs>
@@ -2462,14 +2462,14 @@ const ForceGraph = ({
                           <line x1="0" y1="6" x2="40" y2="6" stroke="#ef4444" strokeWidth="2" markerEnd="url(#intro-red)" />
                         </svg>
                         <div className="w-6 h-6 rounded-full overflow-hidden ring-2 ring-red-500/50">
-                          <img src="https://game.gtimg.cn/images/yxzj/img201606/heroimg/112/112.jpg" alt="" className="w-full h-full object-cover" />
+                          <img src="https://game.gtimg.cn/images/lol/act/img/champion/Annie.png" alt="" className="w-full h-full object-cover" />
                         </div>
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
                       <div className="flex items-center">
                         <div className="w-6 h-6 rounded-full overflow-hidden ring-2 ring-green-500/50">
-                          <img src="https://game.gtimg.cn/images/yxzj/img201606/heroimg/112/112.jpg" alt="" className="w-full h-full object-cover" />
+                          <img src="https://game.gtimg.cn/images/lol/act/img/champion/Annie.png" alt="" className="w-full h-full object-cover" />
                         </div>
                         <svg className="w-10 h-3 -mx-1" viewBox="0 0 40 12">
                           <defs>
@@ -2480,7 +2480,7 @@ const ForceGraph = ({
                           <line x1="0" y1="6" x2="40" y2="6" stroke="#22c55e" strokeWidth="2" markerEnd="url(#intro-green)" />
                         </svg>
                         <div className="w-6 h-6 rounded-full overflow-hidden ring-2 ring-green-500/50">
-                          <img src="https://game.gtimg.cn/images/yxzj/img201606/heroimg/112/112.jpg" alt="" className="w-full h-full object-cover" />
+                          <img src="https://game.gtimg.cn/images/lol/act/img/champion/Annie.png" alt="" className="w-full h-full object-cover" />
                         </div>
                       </div>
                     </div>
