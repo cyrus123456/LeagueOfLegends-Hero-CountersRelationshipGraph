@@ -45,7 +45,7 @@ async function main() {
   // Then we can use a proper tool later
 
   const files = {
-    'kog-logo-gold.png': iconBuffer,      // 32x32 favicon (browser resizes)
+    'lol-logo-gold.png': iconBuffer,      // 32x32 favicon (browser resizes)
     'apple-touch-icon.png': iconBuffer,    // 180x180 (browser resizes)
     'pwa-192x192.png': iconBuffer,         // 192x192 (PWA resizes)
     'pwa-512x512.png': iconBuffer,         // 512x512 (PWA resizes)

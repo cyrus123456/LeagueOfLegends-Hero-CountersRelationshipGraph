@@ -19,9 +19,9 @@ console.log('✅ favicon-16.png (822 bytes)');
 fs.writeFileSync(path.join(PUBLIC, 'favicon-32.png'), Buffer.from(favicon32, 'base64'));
 console.log('✅ favicon-32.png (3.2KB)');
 
-// Use the 32x32 PNG as kog-logo-gold.png (used as 32x32 favicon in index.html)
-fs.writeFileSync(path.join(PUBLIC, 'kog-logo-gold.png'), Buffer.from(favicon32, 'base64'));
-console.log('✅ kog-logo-gold.png (32x32)');
+// Use the 32x32 PNG as lol-logo-gold.png (used as 32x32 favicon in index.html)
+fs.writeFileSync(path.join(PUBLIC, 'lol-logo-gold.png'), Buffer.from(favicon32, 'base64'));
+console.log('✅ lol-logo-gold.png (32x32)');
 
 // For favicon.ico, use the 32x32 PNG (modern browsers accept PNG as ICO)
 fs.writeFileSync(path.join(PUBLIC, 'favicon.ico'), Buffer.from(favicon32, 'base64'));

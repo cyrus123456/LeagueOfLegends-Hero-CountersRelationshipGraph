@@ -17,7 +17,7 @@ export default defineConfig({
     includeAssets: ['apple-touch-icon.png'],
     manifest: {
       name: '英雄联盟英雄克制关系图 | League of Legends Hero Counters',
-      short_name: 'KOG Counters',
+      short_name: 'LOL Counters',
       description: '交互式网络图可视化展示英雄联盟英雄之间的克制关系',
       theme_color: '#0f172a',
       background_color: '#0f172a',

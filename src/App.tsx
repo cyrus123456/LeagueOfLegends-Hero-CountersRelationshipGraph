@@ -53,8 +53,8 @@ interface CustomMapHero {
   reason: string;
 }
 
-const CUSTOM_MAP_HEROES_KEY = 'kog-custom-map-heroes';
-const DELETED_DEFAULT_HEROES_KEY = 'kog-deleted-default-heroes';
+const CUSTOM_MAP_HEROES_KEY = 'lol-custom-map-heroes';
+const DELETED_DEFAULT_HEROES_KEY = 'lol-deleted-default-heroes';
 
 function loadCustomMapHeroes(): Record<string, CustomMapHero[]> {
   try {
@@ -354,7 +354,7 @@ const [isMapCopied, setIsMapCopied] = useState(false);
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `kog-hero-recommendations-${new Date().toISOString().slice(0, 10)}.json`;
+    a.download = `lol-hero-recommendations-${new Date().toISOString().slice(0, 10)}.json`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);

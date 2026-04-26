@@ -479,7 +479,7 @@ const ForceGraph = ({
   // 保存自定义克制关系到 localStorage
   const saveCustomCounterRelations = (relations: CustomCounterRelation[]) => {
     try {
-      localStorage.setItem('kog-custom-counter-relations', JSON.stringify(relations));
+      localStorage.setItem('lol-custom-counter-relations', JSON.stringify(relations));
     } catch (e) {
       console.error('Failed to save custom counter relations:', e);
     }
@@ -487,7 +487,7 @@ const ForceGraph = ({
 
   const saveDeletedDefaultRelations = (relations: string[]) => {
     try {
-      localStorage.setItem('kog-deleted-default-relations', JSON.stringify(relations));
+      localStorage.setItem('lol-deleted-default-relations', JSON.stringify(relations));
     } catch (e) {
       console.error('Failed to save deleted default relations:', e);
     }
@@ -496,7 +496,7 @@ const ForceGraph = ({
   // 保存自定义协同关系到 localStorage
   const saveCustomSynergyRelations = (relations: CustomSynergyRelation[]) => {
     try {
-      localStorage.setItem('kog-custom-synergy-relations', JSON.stringify(relations));
+      localStorage.setItem('lol-custom-synergy-relations', JSON.stringify(relations));
     } catch (e) {
       console.error('Failed to save custom synergy relations:', e);
     }
@@ -504,7 +504,7 @@ const ForceGraph = ({
 
   const saveDeletedDefaultSynergyRelations = (relations: string[]) => {
     try {
-      localStorage.setItem('kog-deleted-default-synergy-relations', JSON.stringify(relations));
+      localStorage.setItem('lol-deleted-default-synergy-relations', JSON.stringify(relations));
     } catch (e) {
       console.error('Failed to save deleted default synergy relations:', e);
     }
@@ -837,22 +837,22 @@ const ForceGraph = ({
 
     // Load custom counter relations from localStorage
     try {
-      const savedCustomRelations = localStorage.getItem('kog-custom-counter-relations');
+      const savedCustomRelations = localStorage.getItem('lol-custom-counter-relations');
 
       if (savedCustomRelations) {
         setCustomCounterRelations(JSON.parse(savedCustomRelations));
       }
-      const savedDeletedRelations = localStorage.getItem('kog-deleted-default-relations');
+      const savedDeletedRelations = localStorage.getItem('lol-deleted-default-relations');
       if (savedDeletedRelations) {
         setDeletedDefaultRelations(JSON.parse(savedDeletedRelations));
       }
 
       // Load custom synergy relations from localStorage
-      const savedCustomSynergy = localStorage.getItem('kog-custom-synergy-relations');
+      const savedCustomSynergy = localStorage.getItem('lol-custom-synergy-relations');
       if (savedCustomSynergy) {
         setCustomSynergyRelations(JSON.parse(savedCustomSynergy));
       }
-      const savedDeletedSynergy = localStorage.getItem('kog-deleted-default-synergy-relations');
+      const savedDeletedSynergy = localStorage.getItem('lol-deleted-default-synergy-relations');
       if (savedDeletedSynergy) {
         setDeletedDefaultSynergyRelations(JSON.parse(savedDeletedSynergy));
       }
