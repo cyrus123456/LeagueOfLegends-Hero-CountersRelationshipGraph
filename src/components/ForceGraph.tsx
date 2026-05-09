@@ -1723,6 +1723,7 @@ const ForceGraph = ({
                   </span>
                 )}
               </h3>
+              {/* 暂时隐藏 - 未来可能有用
               <a
                 href="https://wj.qq.com/s2/26246812/74f2/"
                 target="_blank"
@@ -1731,6 +1732,7 @@ const ForceGraph = ({
               >
                 {t('counterRelationsSurvey')}
               </a>
+              */}
             </div>
 
             {displayedHero || isMultiSelect ? (
