@@ -23,6 +23,7 @@ import {
 import { getCounterReason } from '@/data/counterReasons';
 import type { CounterStrength, HeroId, HeroRole, OwHeroId } from '@/data/heroData';
 import { counterRelations, getHeroName, getRoleNames, heroes, type Hero } from '@/data/heroData';
+import type { MapId } from '@/data/mapData';
 import { maps } from '@/data/mapData';
 import { getSynergyReason } from '@/data/synergyReasons';
 import { synergyRelations } from '@/data/synergyRelations';
@@ -94,14 +95,16 @@ interface CustomSynergyRelation {
   isCustom: boolean;
 }
 
+type SelectedRole = HeroRole | 'all';
+
 interface ForceGraphProps {
-  selectedRole: string | null;
+  selectedRole: SelectedRole | null;
   selectedHeroes: HeroId[];
   onHeroSelect: (heroIds: HeroId[]) => void;
   isDrawerOpen?: boolean;
-  selectedMap?: string | null;
-  customMapHeroes?: Record<string, CustomMapHero[]>;
-  deletedDefaultHeroes?: Record<string, string[]>;
+  selectedMap?: MapId | null;
+  customMapHeroes?: Partial<Record<MapId, CustomMapHero[]>>;
+  deletedDefaultHeroes?: Partial<Record<MapId, OwHeroId[]>>;
   mapDataActions?: {
     exportMapData: () => void;
     importMapData: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -109,6 +112,8 @@ interface ForceGraphProps {
     hasMapUnsavedChanges: boolean;
   };
 }
+
+type ActiveCounterTab = 'counteredBy' | 'counters' | 'synergy';
 
 const ForceGraph = ({
   selectedRole,
@@ -161,7 +166,7 @@ const ForceGraph = ({
   const nodeGroupRef = useRef<d3.Selection<SVGGElement, NodeDatum, SVGGElement, unknown> | null>(null);
   const linkSelectionRef = useRef<d3.Selection<SVGLineElement, LinkDatum, SVGGElement, unknown> | null>(null);
   const currentSelectedHeroesRef = useRef<HeroId[]>([]);
-  const currentActiveCounterTabRef = useRef<string>('counteredBy');
+  const currentActiveCounterTabRef = useRef<ActiveCounterTab>('counteredBy');
   const currentCommonRelatedIdsRef = useRef<Set<HeroId>>(new Set());
   const currentMatchedHeroIdsRef = useRef<Set<HeroId>>(new Set());
   const currentIsMultiSelectRef = useRef(false);
@@ -178,7 +183,7 @@ const ForceGraph = ({
   const [activeCounterTab, setActiveCounterTab] = useState<'counteredBy' | 'counters' | 'synergy'>('counteredBy');
   const [isCopied, setIsCopied] = useState(false);
   const [isIntroOpen, setIsIntroOpen] = useState(false);
-  const [heroSnapshots, setHeroSnapshots] = useState<{ id: string; heroIds: string[]; timestamp: number }[]>([]);
+  const [heroSnapshots, setHeroSnapshots] = useState<{ id: string; heroIds: HeroId[]; timestamp: number }[]>([]);
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const [isDetailOpen, setIsDetailOpen] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
@@ -282,7 +287,7 @@ const ForceGraph = ({
   // O(1) 英雄查找
   const { getHero } = useMemoizedHeroes();
 
-  const getCommonCounters = useCallback((heroIds: string[]) => {
+  const getCommonCounters = useCallback((heroIds: HeroId[]) => {
     if (heroIds.length === 0) return [];
 
     return heroes
@@ -302,7 +307,7 @@ const ForceGraph = ({
       .sort((a, b) => b.strength - a.strength);
   }, [counterRelationMap]);
 
-  const getCommonCounted = useCallback((heroIds: string[]) => {
+  const getCommonCounted = useCallback((heroIds: HeroId[]) => {
     if (heroIds.length === 0) return [];
 
     return heroes
@@ -470,7 +475,7 @@ const ForceGraph = ({
     });
   };
 
-  const roleOrder: Record<string, number> = { toplane: 0, mage: 1, jungle: 2, adc: 3, support: 4 };
+  const roleOrder: Record<HeroRole, number> = { tank: 0, fighter: 1, assassin: 2, mage: 3, marksman: 4, support: 5 };
 
   const sortByRole = <T extends { hero: { role: HeroRole[] } }>(items: T[]): T[] => {
     return [...items].sort((a, b) => roleOrder[a.hero.role[0]] - roleOrder[b.hero.role[0]]);

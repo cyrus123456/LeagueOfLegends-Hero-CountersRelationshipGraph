@@ -38,6 +38,7 @@ import lolIcon from '/app-ico-400x400.png';
 
 import type { HeroId, HeroRole, OwHeroId } from '@/data/heroData';
 import { getRoleNames } from '@/data/heroData';
+import type { MapId } from '@/data/mapData';
 import { getMapName, getMapTypeColor, getMapTypeName, maps } from '@/data/mapData';
 import { sortByRole, useMemoizedHeroes } from '@/hooks/useMemoizedHeroes';
 
@@ -103,10 +104,10 @@ function saveDeletedDefaultHeroes(data: Record<string, OwHeroId[]>): void {
 const MapHeroAvatar = React.memo(({ 
   heroId, customHero, reason, language,
 }: { 
-  heroId: string; 
+  heroId: OwHeroId; 
   customHero: CustomMapHero | undefined; 
   reason: string;
-  language: string;
+  language: Language;
 }) => {
   const { getHero } = useMemoizedHeroes();
   const hero = getHero(heroId);
@@ -139,10 +140,10 @@ const MapHeroesList = React.memo(({
   deletedDefaultForMap,
   language,
 }: {
-  defaultHeroes: string[];
+  defaultHeroes: OwHeroId[];
   customMapHeroesForMap: CustomMapHero[];
-  deletedDefaultForMap: string[];
-  language: string;
+  deletedDefaultForMap: OwHeroId[];
+  language: Language;
 }) => {
   const { getHero } = useMemoizedHeroes();
   
@@ -249,20 +250,20 @@ function AppContent() {
     setShowMobileDialog(false);
   };
 
-  const [selectedRole, setSelectedRole] = useState<string | null>(null);
+  const [selectedRole, setSelectedRole] = useState<HeroRole | 'all' | null>(null);
   const [selectedHeroes, setSelectedHeroes] = useState<HeroId[]>([]);
-  const [selectedMap, setSelectedMap] = useState<string | null>(null);
+  const [selectedMap, setSelectedMap] = useState<MapId | null>(null);
   const [mapSearch, setMapSearch] = useState('');
   const [activeMapType, setActiveMapType] = useState<string>('all');
 const [isMapCopied, setIsMapCopied] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(true);
   const [hoverTimer, setHoverTimer] = useState<ReturnType<typeof setTimeout> | null>(null);
 
-  const [customMapHeroes, setCustomMapHeroes] = useState<Record<string, CustomMapHero[]>>({});
-  const [deletedDefaultHeroes, setDeletedDefaultHeroes] = useState<Record<string, OwHeroId[]>>({});
+  const [customMapHeroes, setCustomMapHeroes] = useState<Partial<Record<MapId, CustomMapHero[]>>>({});
+  const [deletedDefaultHeroes, setDeletedDefaultHeroes] = useState<Partial<Record<MapId, OwHeroId[]>>>({});
   const [newHeroId, setNewHeroId] = useState<OwHeroId | ''>('');
   const [newHeroReason, setNewHeroReason] = useState<string>('');
-  const [addingHeroMapId, setAddingHeroMapId] = useState<string | null>(null);
+  const [addingHeroMapId, setAddingHeroMapId] = useState<MapId | null>(null);
   const addHeroFormRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -286,14 +287,14 @@ const [isMapCopied, setIsMapCopied] = useState(false);
 
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
 
-  const addCustomHero = (mapId: string, heroId: OwHeroId, reason: string) => {
+  const addCustomHero = (mapId: MapId, heroId: OwHeroId, reason: string) => {
     if (!heroId.trim()) return;
     setCustomMapHeroes(prev => {
-      const updated: Record<string, CustomMapHero[]> = {
+      const updated: Partial<Record<MapId, CustomMapHero[]>> = {
         ...prev,
         [mapId]: [...(prev[mapId] || []), { heroId, reason }],
       };
-      saveCustomMapHeroes(updated);
+      saveCustomMapHeroes(updated as Record<MapId, CustomMapHero[]>);
       return updated;
     });
     setHasUnsavedChanges(true);
@@ -302,42 +303,42 @@ const [isMapCopied, setIsMapCopied] = useState(false);
     setAddingHeroMapId(null);
   };
 
-  const removeCustomHero = (mapId: string, index: number) => {
+  const removeCustomHero = (mapId: MapId, index: number) => {
     setCustomMapHeroes(prev => {
       const mapHeroes = prev[mapId] || [];
-      const updated = {
+      const updated: Partial<Record<MapId, CustomMapHero[]>> = {
         ...prev,
-        [mapId]: mapHeroes.filter((_, i) => i !== index),
+        [mapId]: mapHeroes.filter((_: CustomMapHero, i: number) => i !== index),
       };
-      saveCustomMapHeroes(updated);
+      saveCustomMapHeroes(updated as Record<MapId, CustomMapHero[]>);
       return updated;
     });
     setHasUnsavedChanges(true);
   };
 
-  const deleteDefaultHero = (mapId: string, heroId: OwHeroId) => {
+  const deleteDefaultHero = (mapId: MapId, heroId: OwHeroId) => {
     setDeletedDefaultHeroes(prev => {
-      const updated: Record<string, OwHeroId[]> = {
+      const updated: Partial<Record<MapId, OwHeroId[]>> = {
         ...prev,
         [mapId]: [...(prev[mapId] || []), heroId],
       };
-      saveDeletedDefaultHeroes(updated);
+      saveDeletedDefaultHeroes(updated as Record<MapId, OwHeroId[]>);
       return updated;
     });
     setHasUnsavedChanges(true);
   };
 
-  const resetMapToDefault = (mapId: string) => {
+  const resetMapToDefault = (mapId: MapId) => {
     setCustomMapHeroes(prev => {
       const updated = { ...prev };
       delete updated[mapId];
-      saveCustomMapHeroes(updated);
+      saveCustomMapHeroes(updated as Record<MapId, CustomMapHero[]>);
       return updated;
     });
     setDeletedDefaultHeroes(prev => {
       const updated = { ...prev };
       delete updated[mapId];
-      saveDeletedDefaultHeroes(updated);
+      saveDeletedDefaultHeroes(updated as Record<MapId, OwHeroId[]>);
       return updated;
     });
     setHasUnsavedChanges(true);

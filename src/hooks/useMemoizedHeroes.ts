@@ -1,4 +1,4 @@
-import { heroes, type Hero, type HeroId, type HeroRole } from '@/data/heroData';
+import { heroes, type Hero, type HeroId, type HeroRole, type OwHeroId } from '@/data/heroData';
 import type { Language } from '@/i18n';
 import { useCallback, useMemo } from 'react';
 
@@ -11,10 +11,10 @@ export function useMemoizedHeroes() {
     return map;
   }, []);
 
-  const getHero = useCallback((id: string): Hero | undefined => heroMap.get(id as HeroId), [heroMap]);
+  const getHero = useCallback((id: OwHeroId): Hero | undefined => heroMap.get(id as HeroId), [heroMap]);
 
-  const getHeroName = useCallback((heroId: string, language: Language): string => {
-    const hero = heroMap.get(heroId as HeroId);
+  const getHeroName = useCallback((heroId: HeroId, language: Language): string => {
+    const hero = heroMap.get(heroId);
     if (!hero) return '';
     return language === 'zh' ? hero.name : hero.nameEn;
   }, [heroMap]);

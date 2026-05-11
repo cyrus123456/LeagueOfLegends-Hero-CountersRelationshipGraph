@@ -1,6 +1,8 @@
 // 英雄联盟英雄数据 - 从攻略中心 https://101.qq.com 爬取
 // 生成时间: 2026-04-18T04:03:55.264Z
 
+import type { Language } from '@/i18n';
+
 /** 英雄联盟英雄职业类型 */
 export type HeroRole = 'tank' | 'fighter' | 'assassin' | 'mage' | 'marksman' | 'support';
 
@@ -212,7 +214,15 @@ export interface CounterRelation {
 }
 
 /** 兼容英雄ID类型（支持LOL、英雄联盟、守望先锋等多游戏英雄ID） */
-export type OwHeroId = HeroId | string;
+export type OwHeroId = HeroId
+  | 'winston' | 'dva' | 'orisa' | 'wrecking_ball' | 'doomfist' | 'ramattra'
+  | 'junkrat' | 'pharah' | 'genji' | 'hanzo' | 'soldier76' | 'venture'
+  | 'lucio' | 'kiriko' | 'zenyatta' | 'baptiste' | 'illari' | 'junker_queen'
+  | 'sigma' | 'zarya' | 'hazard' | 'mauga' | 'reaper' | 'tracer' | 'echo'
+  | 'ashe' | 'cassidy' | 'bastion' | 'mei' | 'symmetra' | 'torbjorn' | 'widowmaker'
+  | 'sombra' | 'mercy' | 'moira' | 'brigitte' | 'ana' | 'lifeweaver'
+  | 'freja' | 'sojourn' | 'feitianmao' | 'juno' | 'domina' | 'jinyu' | 'vendetta' | 'anran' | 'emrey' | 'wuyang' | 'ruixi' | 'mizuki'
+  | 'reinhardt' | 'roadhog';
 
 // 英雄图片URL - 使用英雄联盟官方CDN资源
 // 来源: https://101.qq.com/#/hero
@@ -1783,12 +1793,12 @@ const roleNameMap: Record<HeroRole, Record<string, string>> = {
 };
 
 /** 获取职业名称 */
-export function getRoleNames(roles: HeroRole[], language: string = 'zh'): string {
+export function getRoleNames(roles: HeroRole[], language: Language = 'zh'): string {
   return roles.map(r => roleNameMap[r]?.[language] || r).join('/');
 }
 
 /** 获取英雄名称 */
-export function getHeroName(hero: Hero | undefined | null, language: string = 'zh'): string {
+export function getHeroName(hero: Hero | undefined | null, language: Language = 'zh'): string {
   if (!hero) return '';
   return language === 'zh' ? hero.name : hero.nameEn;
 }
