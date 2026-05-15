@@ -564,7 +564,7 @@ const [isMapCopied, setIsMapCopied] = useState(false);
                       </SelectContent>
                     </Select>
                   </div>
-                <Button variant="outline" size="sm" className="border-slate-700 bg-slate-800/30 hover:bg-slate-800 text-white hover:text-white gap-2 h-8 px-3 rounded-full transition-all" onClick={() => window.open('https://github.com/cyrus123456/HonorOfKings-Hero-Counters', '_blank')}>
+                <Button variant="outline" size="sm" className="border-slate-700 bg-slate-800/30 hover:bg-slate-800 text-white hover:text-white gap-2 h-8 px-3 rounded-full transition-all" onClick={() => window.open('https://github.com/cyrus123456/LeagueOfLegends-Hero-CountersRelationshipGraph', '_blank')}>
                   <Github className="w-3.5 h-3.5" />
                   <span className="text-xs font-bold">{t('github')}</span>
                 </Button>
