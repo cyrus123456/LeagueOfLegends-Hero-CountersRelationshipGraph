@@ -7,10 +7,8 @@
 
 ## 在线演示
 
-## 在线演示
-
-- **GitHub Pages**: [点击查看](https://cyrus123456.github.io/LeagueOfLegends-Hero-CountersRelationshipGraph/)
-- **Cloudflare Workers**: [点击查看](https://leagueoflegendsherocountersrelationshipgraph.b8c72dzp5t.workers.dev/)
+- **GitHub Pages**: [https://cyrus123456.github.io/LeagueOfLegends-Hero-CountersRelationshipGraph/](https://cyrus123456.github.io/LeagueOfLegends-Hero-CountersRelationshipGraph/)
+- **Cloudflare Workers(国内可访问)**: [https://leagueoflegends-hero-countersrelationshipgraph.pages.dev/](https://leagueoflegends-hero-countersrelationshipgraph.pages.dev/)
 
 直接访问上方链接即可体验完整功能！
 

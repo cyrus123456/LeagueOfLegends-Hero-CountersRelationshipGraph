@@ -7,8 +7,8 @@ An interactive visualization application built with React + TypeScript + Vite to
 
 ## Live Demo
 
-- **GitHub Pages**: [View Deployed Site](https://cyrus123456.github.io/LeagueOfLegends-Hero-CountersRelationshipGraph/)
-- **Cloudflare Workers**: [View Deployed Site](https://leagueoflegendsherocountersrelationshipgraph.b8c72dzp5t.workers.dev/)
+- **GitHub Pages**: [https://cyrus123456.github.io/LeagueOfLegends-Hero-CountersRelationshipGraph/](https://cyrus123456.github.io/LeagueOfLegends-Hero-CountersRelationshipGraph/)
+- **Cloudflare Workers(国内可访问)**: [https://leagueoflegends-hero-countersrelationshipgraph.pages.dev/](https://leagueoflegends-hero-countersrelationshipgraph.pages.dev/)
 
 You can access the link above directly to experience the full hero counter visualization without local installation!
 
