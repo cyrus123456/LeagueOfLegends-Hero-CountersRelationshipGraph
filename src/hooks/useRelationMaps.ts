@@ -1,4 +1,4 @@
-import type { CounterStrength } from '@/data/heroData';
+import type { CounterRelationScope, CounterStrength } from '@/data/heroData';
 import { useMemo } from 'react';
 
 /**
@@ -9,6 +9,7 @@ interface RelationData {
   target: string;
   strength: CounterStrength;
   isCustom: boolean;
+  scope?: CounterRelationScope;
 }
 
 /** 克制/协同关系输入格式 */
@@ -17,13 +18,21 @@ export type RelationInput = {
   target: string;
   strength?: CounterStrength;
   isCustom?: boolean;
+  scope?: CounterRelationScope;
 };
+
+export type CounterRelationTab = 'counters' | 'counteredBy';
 
 /**
  * 关系查找 Map - 将 O(n) 的 Array.find 降为 O(1) 的 Map.get
  * key 格式: "sourceId-targetId"
  */
 export type RelationMap = Map<string, RelationData>;
+
+function matchesScope(scope: CounterRelationScope | undefined, tab: CounterRelationTab): boolean {
+  if (!scope) return true;
+  return scope === tab;
+}
 
 /**
  * 为克制/协同关系预构建查找 Map
@@ -38,7 +47,13 @@ export function useRelationMaps(
     return new Map(
       counterRelations.map(r => [
         `${r.source}-${r.target}`,
-        { source: r.source, target: r.target, strength: r.strength || 1, isCustom: r.isCustom || false }
+        {
+          source: r.source,
+          target: r.target,
+          strength: r.strength || 1,
+          isCustom: r.isCustom || false,
+          scope: r.scope,
+        }
       ])
     );
   }, [counterRelations]);
@@ -55,15 +70,25 @@ export function useRelationMaps(
   /**
    * O(1) 查找克制关系强度，返回 undefined 表示不存在
    */
-  const getCounterStrength = (sourceId: string, targetId: string): CounterStrength | undefined => {
-    return counterMap.get(`${sourceId}-${targetId}`)?.strength;
+  const getCounterStrength = (
+    sourceId: string,
+    targetId: string,
+    tab?: CounterRelationTab,
+  ): CounterStrength | undefined => {
+    const relation = counterMap.get(`${sourceId}-${targetId}`);
+    if (!relation) return undefined;
+    if (tab && !matchesScope(relation.scope, tab)) return undefined;
+    return relation.strength;
   };
 
   /**
    * O(1) 判断克制关系是否存在
    */
-  const hasCounterRelation = (sourceId: string, targetId: string): boolean => {
-    return counterMap.has(`${sourceId}-${targetId}`);
+  const hasCounterRelation = (sourceId: string, targetId: string, tab?: CounterRelationTab): boolean => {
+    const relation = counterMap.get(`${sourceId}-${targetId}`);
+    if (!relation) return false;
+    if (tab && !matchesScope(relation.scope, tab)) return false;
+    return true;
   };
 
   /**

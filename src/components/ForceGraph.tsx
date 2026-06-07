@@ -21,7 +21,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { getCounterReason } from '@/data/counterReasons';
-import type { CounterStrength, HeroId, HeroRole, OwHeroId } from '@/data/heroData';
+import type { CounterRelationScope, CounterStrength, HeroId, HeroRole, OwHeroId } from '@/data/heroData';
 import { counterRelations, getHeroName, getRoleNames, heroes, type Hero } from '@/data/heroData';
 import type { MapId } from '@/data/mapData';
 import { maps } from '@/data/mapData';
@@ -85,6 +85,7 @@ interface CustomCounterRelation {
   target: HeroId;
   strength: CounterStrength;
   isCustom: boolean;
+  scope?: CounterRelationScope;
 }
 
 // 自定义协同关系数据结构
@@ -249,7 +250,7 @@ const ForceGraph = ({
     const all = [...filteredDefaults, ...customCounterRelations];
     const seen = new Set<string>();
     return all.filter(r => {
-      const key = `${r.source}-${r.target}`;
+      const key = `${r.source}-${r.target}-${r.scope}`;
       if (seen.has(key)) return false;
       seen.add(key);
       return true;
@@ -292,9 +293,11 @@ const ForceGraph = ({
 
     return heroes
       .map(h => {
-        const relations = heroIds.map(targetId =>
-          counterRelationMap.get(`${h.id}-${targetId}`)
-        );
+        const relations = heroIds.map(targetId => {
+          const relation = counterRelationMap.get(`${h.id}-${targetId}`);
+          if (relation?.scope === 'counters') return undefined;
+          return relation;
+        });
 
         if (relations.every(r => r !== undefined)) {
           const minStrength = Math.min(...relations.map(r => r!.strength)) as CounterStrength;
@@ -312,9 +315,11 @@ const ForceGraph = ({
 
     return heroes
       .map(h => {
-        const relations = heroIds.map(sourceId =>
-          counterRelationMap.get(`${sourceId}-${h.id}`)
-        );
+        const relations = heroIds.map(sourceId => {
+          const relation = counterRelationMap.get(`${sourceId}-${h.id}`);
+          if (relation?.scope === 'counteredBy') return undefined;
+          return relation;
+        });
 
         if (relations.every(r => r !== undefined)) {
           const minStrength = Math.min(...relations.map(r => r!.strength)) as CounterStrength;
@@ -331,7 +336,7 @@ const ForceGraph = ({
     if (selectedHeroes.length === 0) return [];
     if (selectedHeroes.length === 1) {
       return mergedCounterRelations
-        .filter(r => r.target === selectedHeroes[0])
+        .filter(r => r.target === selectedHeroes[0] && r.scope !== 'counters')
         .map(r => ({
           hero: getHero(r.source),
           strength: r.strength || 1,
@@ -349,7 +354,7 @@ const ForceGraph = ({
     if (selectedHeroes.length === 0) return [];
     if (selectedHeroes.length === 1) {
       return mergedCounterRelations
-        .filter(r => r.source === selectedHeroes[0])
+        .filter(r => r.source === selectedHeroes[0] && r.scope !== 'counteredBy')
         .map(r => ({
           hero: getHero(r.target),
           strength: r.strength || 1,
@@ -1068,7 +1073,9 @@ const ForceGraph = ({
         const sourceId = typeof d.source === 'string' ? d.source : d.source.id;
         const targetId = typeof d.target === 'string' ? d.target : d.target.id;
         // O(1) Map 查找替代 O(R) Array.find
-        const strength = getCounterStrength(sourceId, targetId);
+        const strength = currentActiveCounterTab === 'synergy'
+          ? getSynergyStrength(sourceId, targetId)
+          : getCounterStrength(sourceId, targetId, currentActiveCounterTab);
         if (!strength) return 140;
         const isRelated = currentActiveCounterTab === 'counteredBy' ?
           (targetId === currentSelectedHero || sourceId === currentSelectedHero) :
@@ -1109,15 +1116,21 @@ const ForceGraph = ({
       .attr('r', (d: LinkDatum) => {
         const sourceId = typeof d.source === 'string' ? d.source : d.source.id;
         const targetId = typeof d.target === 'string' ? d.target : d.target.id;
+        const tab = currentActiveCounterTabRef.current;
         // O(1) 替代 O(R) .find()
-        const s = getCounterStrength(sourceId, targetId) ?? 1;
+        const s = tab === 'synergy'
+          ? (getSynergyStrength(sourceId, targetId) ?? 1)
+          : (getCounterStrength(sourceId, targetId, tab) ?? 1);
         return s === 3 ? 6 : s === 2 ? 4.5 : 3;
       })
       .attr('fill', (d: LinkDatum) => {
         const sourceId = typeof d.source === 'string' ? d.source : d.source.id;
         const targetId = typeof d.target === 'string' ? d.target : d.target.id;
+        const tab = currentActiveCounterTabRef.current;
         // O(1) 替代 O(R) .find() (原代码此处调用了 2 次 find)
-        const s = getCounterStrength(sourceId, targetId) ?? 1;
+        const s = tab === 'synergy'
+          ? (getSynergyStrength(sourceId, targetId) ?? 1)
+          : (getCounterStrength(sourceId, targetId, tab) ?? 1);
 
         // Synergy模式使用紫色系粒子
         if (activeCounterTab === 'synergy') {
@@ -1417,8 +1430,8 @@ const ForceGraph = ({
           } else {
             // O(1) 替代 O(R) .some()
             isRelated = activeCounterTab === 'counteredBy'
-              ? hasCounterRelation(d.id, targetHero)
-              : hasCounterRelation(targetHero, d.id);
+              ? hasCounterRelation(d.id, targetHero, 'counteredBy')
+              : hasCounterRelation(targetHero, d.id, 'counters');
           }
         }
         return isRelated ? 1 : 0.6;
@@ -1444,8 +1457,8 @@ const ForceGraph = ({
           const str = activeCounterTab === 'synergy'
             ? getSynergyStrength(d.id, targetHero)
             : (activeCounterTab === 'counteredBy'
-              ? getCounterStrength(d.id, targetHero)
-              : getCounterStrength(targetHero, d.id));
+              ? getCounterStrength(d.id, targetHero, 'counteredBy')
+              : getCounterStrength(targetHero, d.id, 'counters'));
           if (str !== undefined) {
             relation = { strength: str };
           }
@@ -1482,8 +1495,8 @@ const ForceGraph = ({
             hasRelation = activeCounterTab === 'synergy'
               ? (hasSynergyRelation(d.id, targetHero) || d.id === targetHero)
               : activeCounterTab === 'counteredBy'
-                ? (hasCounterRelation(d.id, targetHero) || d.id === targetHero)
-                : (hasCounterRelation(targetHero, d.id) || d.id === targetHero);
+                ? (hasCounterRelation(d.id, targetHero, 'counteredBy') || d.id === targetHero)
+                : (hasCounterRelation(targetHero, d.id, 'counters') || d.id === targetHero);
           }
         }
         // 有关系时完全不透明，无关系时半透明
@@ -1510,11 +1523,11 @@ const ForceGraph = ({
             if (isRelevant) {
               s = activeCounterTab === 'synergy'
                 ? (getSynergyStrength(sourceId, targetId) ?? 1)
-                : (getCounterStrength(sourceId, targetId) ?? 1);
+                : (getCounterStrength(sourceId, targetId, 'counteredBy') ?? 1);
             }
           } else {
             isRelevant = selectedHeroes.includes(sourceId) && commonRelatedIds.has(targetId);
-            if (isRelevant) s = getCounterStrength(sourceId, targetId) ?? 1;
+            if (isRelevant) s = getCounterStrength(sourceId, targetId, 'counters') ?? 1;
           }
         } else {
           const targetHero = selectedHeroes[0];
@@ -1522,7 +1535,7 @@ const ForceGraph = ({
           if (isRelevant) {
             s = activeCounterTab === 'synergy'
               ? (getSynergyStrength(sourceId, targetId) ?? 1)
-              : (getCounterStrength(sourceId, targetId) ?? 1);
+              : (getCounterStrength(sourceId, targetId, activeCounterTab) ?? 1);
           }
         }
 
@@ -1579,7 +1592,7 @@ const ForceGraph = ({
             .attr('stroke', '#a855f7')
             .attr('marker-end', null);
         } else {
-          const s = getCounterStrength(sourceId, targetId) ?? 1;
+          const s = getCounterStrength(sourceId, targetId, activeCounterTab) ?? 1;
           el.attr('stroke-opacity', s === 3 ? 0.5 : s === 2 ? 0.15 : 0.05)
             .attr('stroke-width', s === 3 ? 4.5 : s === 2 ? 3 : 1.5)
             .attr('stroke', s === 3 ? '#b91c1c' : s === 2 ? '#ef4444' : '#fca5a5')
