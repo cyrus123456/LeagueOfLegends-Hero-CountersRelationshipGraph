@@ -205,6 +205,11 @@ const heroName = hero ? (language === 'zh' ? hero.name : hero.nameEn) : 'Unknown
 - 不要将临时脚本直接放在项目根目录
 - 临时数据文件（如临时JSON数据）也应该放在 `scripts/` 目录中
 
+## Data Sources
+
+- **英雄属性数据**（英雄名称、职业、头像等）来源: https://101.qq.com/#/hero
+- **英雄之间关系数据**（克制/被克制、协同关系等）来源: https://op.gg/zh-cn/lol/champions
+
 ## Project Structure
 
 ```

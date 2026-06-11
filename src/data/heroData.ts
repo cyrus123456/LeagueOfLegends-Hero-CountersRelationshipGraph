@@ -22,6 +22,18 @@ export const roleColors: Record<HeroRole, string> = {
   support: '#22c55e',
 };
 
+/** 英雄分路/位置类型 */
+export type HeroLane = 'toplane' | 'jungle' | 'midlane' | 'adc' | 'support';
+
+/** 分路颜色映射 */
+export const laneColors: Record<HeroLane, string> = {
+  toplane: '#f59e0b',
+  jungle: '#10b981',
+  midlane: '#8b5cf6',
+  adc: '#3b82f6',
+  support: '#f97316',
+};
+
 /** 英雄联盟英雄ID */
 export type HeroId =
   | 'annie'

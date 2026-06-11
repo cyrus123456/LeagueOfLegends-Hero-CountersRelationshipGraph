@@ -30,14 +30,16 @@ import {
   Search,
   Shield,
   Target,
+  Trees,
   Trash2,
   X
 } from 'lucide-react';
 import React, { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import lolIcon from '/app-ico-400x400.png';
 
-import type { HeroId, HeroRole, OwHeroId } from '@/data/heroData';
+import type { HeroId, HeroLane, HeroRole, OwHeroId } from '@/data/heroData';
 import { getRoleNames } from '@/data/heroData';
+import { getHeroLanes } from '@/data/heroLaneData';
 import type { MapId } from '@/data/mapData';
 import { getMapName, getMapTypeColor, getMapTypeName, maps } from '@/data/mapData';
 import { sortByRole, useMemoizedHeroes } from '@/hooks/useMemoizedHeroes';
@@ -251,6 +253,7 @@ function AppContent() {
   };
 
   const [selectedRole, setSelectedRole] = useState<HeroRole | 'all' | null>(null);
+  const [selectedLane, setSelectedLane] = useState<HeroLane | null>(null);
   const [selectedHeroes, setSelectedHeroes] = useState<HeroId[]>([]);
   const [selectedMap, setSelectedMap] = useState<MapId | null>(null);
   const [mapSearch, setMapSearch] = useState('');
@@ -489,6 +492,14 @@ const [isMapCopied, setIsMapCopied] = useState(false);
     { id: 'mage', name: t('mage'), nameEn: 'Mage', icon: Crosshair, color: '#a855f7' },
     { id: 'marksman', name: t('marksman'), nameEn: 'Marksman', icon: Crosshair, color: '#3b82f6' },
     { id: 'support', name: t('support'), nameEn: 'Support', icon: Heart, color: '#22c55e' },
+  ];
+
+  const lanes: { id: HeroLane; icon: typeof Shield; color: string }[] = [
+    { id: 'toplane', icon: Shield, color: '#f59e0b' },
+    { id: 'jungle', icon: Trees, color: '#10b981' },
+    { id: 'midlane', icon: Crosshair, color: '#8b5cf6' },
+    { id: 'adc', icon: Target, color: '#3b82f6' },
+    { id: 'support', icon: Heart, color: '#f97316' },
   ];
 
   const languages: { value: Language; nativeName: string }[] = [
@@ -1028,6 +1039,55 @@ const [isMapCopied, setIsMapCopied] = useState(false);
                 );
               })}
             </div>
+            {/* 分路筛选工具栏 - 位于职业筛选下方 */}
+            <div className="absolute top-[5.2rem] left-1/2 -translate-x-1/2 z-10 flex items-center gap-1.5 bg-slate-800/40 backdrop-blur-md border border-slate-700/60 p-1 rounded-full shadow-2xl pointer-events-auto">
+              <Button 
+                variant={selectedLane === null ? 'default' : 'ghost'} 
+                size="sm" 
+                className={`rounded-full px-4 gap-1.5 transition-all duration-300 h-8 ${
+                  selectedLane === null 
+                    ? 'bg-cyan-600 hover:bg-cyan-700 text-white shadow-lg shadow-cyan-900/40 scale-105' 
+                    : 'text-white/70 hover:text-white hover:bg-slate-800'
+                }`} 
+                onClick={() => setSelectedLane(null)}
+              >
+                <span className="text-[0.625rem] font-bold uppercase tracking-widest">{t('allLanes')}</span>
+              </Button>
+              <div className="w-px h-3 bg-slate-800 mx-0.5" />
+              {lanes.map(lane => {
+                const isSelected = selectedLane === lane.id;
+                const laneTKey = lane.id === 'adc' ? 'adcLane' : lane.id === 'toplane' ? 'toplane' : lane.id === 'midlane' ? 'midlane' : lane.id === 'jungle' ? 'jungle' : 'supportLane';
+                const laneCount = heroes.filter(h => getHeroLanes(h.id).includes(lane.id)).length;
+                return (
+                  <Button 
+                    key={lane.id} 
+                    variant={isSelected ? 'default' : 'ghost'} 
+                    size="sm" 
+                    className={`rounded-full px-4 gap-1.5 transition-all duration-300 h-8 ${
+                      isSelected 
+                        ? 'text-white shadow-lg scale-105' 
+                        : 'text-white/70 hover:text-white hover:bg-slate-800'
+                    }`}
+                    style={isSelected ? { 
+                      backgroundColor: lane.color,
+                      boxShadow: `0 10px 15px -3px ${lane.color}40, 0 4px 6px -4px ${lane.color}40`
+                    } : {}}
+                    onClick={() => setSelectedLane(isSelected ? null : lane.id)}
+                  >
+                    <lane.icon className="w-3.5 h-3.5" style={{ color: isSelected ? '#fff' : lane.color }} />
+                    <span className="text-[0.625rem] font-bold uppercase tracking-widest">{t(laneTKey)}</span>
+                    <Badge 
+                      variant="secondary" 
+                      className={`ml-0.5 text-[0.5625rem] h-4 px-1.5 font-mono font-bold ${
+                        isSelected ? 'bg-white/20 text-white border-transparent' : 'bg-slate-900/80 text-white/80 border-slate-800'
+                      }`}
+                    >
+                      {laneCount}
+                    </Badge>
+                  </Button>
+                );
+              })}
+            </div>
             <Suspense fallback={
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="flex flex-col items-center gap-4">
@@ -1038,6 +1098,7 @@ const [isMapCopied, setIsMapCopied] = useState(false);
             }>
             <ForceGraph 
               selectedRole={selectedRole} 
+              selectedLane={selectedLane}
               selectedHeroes={selectedHeroes} 
               onHeroSelect={setSelectedHeroes} 
               isDrawerOpen={isDrawerOpen} 

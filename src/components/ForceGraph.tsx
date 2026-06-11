@@ -21,8 +21,9 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { getCounterReason } from '@/data/counterReasons';
-import type { CounterRelationScope, CounterStrength, HeroId, HeroRole, OwHeroId } from '@/data/heroData';
+import type { CounterRelationScope, CounterStrength, HeroId, HeroLane, HeroRole, OwHeroId } from '@/data/heroData';
 import { counterRelations, getHeroName, getRoleNames, heroes, type Hero } from '@/data/heroData';
+import { getHeroLanes } from '@/data/heroLaneData';
 import type { MapId } from '@/data/mapData';
 import { maps } from '@/data/mapData';
 import { getSynergyReason } from '@/data/synergyReasons';
@@ -100,6 +101,7 @@ type SelectedRole = HeroRole | 'all';
 
 interface ForceGraphProps {
   selectedRole: SelectedRole | null;
+  selectedLane: HeroLane | null;
   selectedHeroes: HeroId[];
   onHeroSelect: (heroIds: HeroId[]) => void;
   isDrawerOpen?: boolean;
@@ -118,6 +120,7 @@ type ActiveCounterTab = 'counteredBy' | 'counters' | 'synergy';
 
 const ForceGraph = ({
   selectedRole,
+  selectedLane,
   selectedHeroes,
   onHeroSelect,
   isDrawerOpen = true,
@@ -913,6 +916,7 @@ const ForceGraph = ({
 
   const prepareBaseNodes = useCallback((): NodeDatum[] => {
     return heroes
+      .filter(h => !selectedLane || getHeroLanes(h.id).includes(selectedLane))
       .filter(h => !selectedRole || selectedRole === 'all' || h.role.includes(selectedRole as HeroRole))
       .map(h => {
         let nodeColor = h.color[h.role[0]];
@@ -929,7 +933,7 @@ const ForceGraph = ({
           radius: h.role.includes('fighter') || h.role.includes('assassin') ? 18 : 15,
         };
       });
-  }, [selectedRole, isTouchDevice]);
+  }, [selectedRole, selectedLane, isTouchDevice]);
 
   const prepareLinks = useCallback((nodeIds: Set<HeroId>): LinkDatum[] => {
     if (selectedHeroes.length === 0) {
