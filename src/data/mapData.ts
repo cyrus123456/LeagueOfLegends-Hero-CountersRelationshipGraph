@@ -13,6 +13,7 @@ export interface Map {
   id: MapId;
   name: string;
   nameEn: string;
+  pinyin?: string;
   type: MapType;
   recommendedHeroes: OwHeroId[];
   heroReasons: Partial<Record<OwHeroId, Partial<Record<MapLanguage, string>>>>;
@@ -42,6 +43,7 @@ export const getMapName = (map: Map | undefined | null, language: MapLanguage = 
       id: 'busan',
       name: '釜山',
       nameEn: 'Busan',
+      pinyin: 'fu shan',
       type: 'control',
       recommendedHeroes: ['winston', 'dva', 'orisa', 'wrecking_ball', 'doomfist', 'ramattra', 'junkrat', 'pharah', 'genji', 'hanzo', 'soldier76', 'venture', 'lucio', 'kiriko', 'zenyatta', 'baptiste', 'illari'],
       heroReasons: {
@@ -72,6 +74,7 @@ export const getMapName = (map: Map | undefined | null, language: MapLanguage = 
       id: 'ilios',
       name: '伊利奥斯',
       nameEn: 'Ilios',
+      pinyin: 'yi li ao si',
       type: 'control',
       recommendedHeroes: ['wrecking_ball', 'doomfist', 'sigma', 'winston', 'orisa', 'mauga', 'pharah', 'hanzo', 'tracer', 'echo', 'freja', 'sojourn', 'lucio', 'feitianmao', 'illari', 'juno', 'lifeweaver'],
       heroReasons: {
@@ -102,6 +105,7 @@ export const getMapName = (map: Map | undefined | null, language: MapLanguage = 
       id: 'lijiang',
       name: '漓江塔',
       nameEn: 'Lijiang Tower',
+      pinyin: 'li jiang ta',
       type: 'control',
       recommendedHeroes: ['dva', 'junker_queen', 'ramattra', 'winston', 'zarya', 'hazard', 'hanzo', 'genji', 'sombra', 'reaper', 'junkrat', 'venture', 'kiriko', 'mercy', 'lifeweaver', 'lucio', 'moira'],
       heroReasons: {
@@ -132,6 +136,7 @@ export const getMapName = (map: Map | undefined | null, language: MapLanguage = 
       id: 'nepal',
       name: '尼泊尔',
       nameEn: 'Nepal',
+      pinyin: 'ni bo er',
       type: 'control',
       recommendedHeroes: ['winston', 'wrecking_ball', 'zarya', 'dva', 'doomfist', 'sigma', 'genji', 'tracer', 'venture', 'pharah', 'sombra', 'ashe', 'lucio', 'zenyatta', 'juno', 'feitianmao', 'kiriko'],
       heroReasons: {
@@ -162,6 +167,7 @@ export const getMapName = (map: Map | undefined | null, language: MapLanguage = 
       id: 'samoa',
       name: '萨摩亚·火山',
       nameEn: 'Samoa',
+      pinyin: 'sa mo ya huo shan',
       type: 'control',
       recommendedHeroes: ['sigma', 'orisa', 'mauga', 'winston', 'wrecking_ball', 'doomfist', 'pharah', 'junkrat', 'freja', 'echo', 'sojourn', 'hanzo', 'feitianmao', 'illari', 'baptiste', 'lucio', 'juno'],
       heroReasons: {
@@ -192,6 +198,7 @@ export const getMapName = (map: Map | undefined | null, language: MapLanguage = 
       id: 'oasis',
       name: '绿洲城',
       nameEn: 'Oasis',
+      pinyin: 'lu zhou cheng',
       type: 'control',
       recommendedHeroes: ['winston', 'dva', 'doomfist', 'sigma', 'orisa', 'ramattra', 'pharah', 'hanzo', 'sojourn', 'tracer', 'genji', 'freja', 'lucio', 'kiriko', 'zenyatta', 'feitianmao', 'illari'],
       heroReasons: {
@@ -224,6 +231,7 @@ export const getMapName = (map: Map | undefined | null, language: MapLanguage = 
     id: 'blizzard_world',
     name: '暴雪世界',
     nameEn: 'Blizzard World',
+    pinyin: 'bao xue shi jie',
     type: 'hybrid',
     recommendedHeroes: ['reinhardt', 'orisa', 'sigma', 'junker_queen', 'zarya', 'roadhog', 'soldier76', 'ashe', 'cassidy', 'widowmaker', 'pharah', 'torbjorn', 'ana', 'baptiste', 'mercy', 'zenyatta', 'brigitte'],
     heroReasons: {
@@ -254,6 +262,7 @@ export const getMapName = (map: Map | undefined | null, language: MapLanguage = 
     id: 'eichenwalde',
     name: '艾兴瓦尔德',
     nameEn: 'Eichenwalde',
+    pinyin: 'ai xing wa er de',
     type: 'hybrid',
     recommendedHeroes: ['reinhardt', 'junker_queen', 'roadhog', 'ramattra', 'mauga', 'hazard', 'reaper', 'junkrat', 'bastion', 'cassidy', 'ashe', 'symmetra', 'brigitte', 'moira', 'lucio', 'lifeweaver', 'ruixi'],
     heroReasons: {
@@ -284,6 +293,7 @@ export const getMapName = (map: Map | undefined | null, language: MapLanguage = 
     id: 'hollywood',
     name: '好莱坞',
     nameEn: 'Hollywood',
+    pinyin: 'hao lai wu',
     type: 'hybrid',
     recommendedHeroes: ['orisa', 'sigma', 'zarya', 'reinhardt', 'junker_queen', 'jinyu', 'widowmaker', 'hanzo', 'sojourn', 'soldier76', 'pharah', 'ashe', 'ana', 'illari', 'baptiste', 'zenyatta', 'mercy'],
     heroReasons: {
@@ -314,6 +324,7 @@ export const getMapName = (map: Map | undefined | null, language: MapLanguage = 
     id: 'kings_row',
     name: '国王大道',
     nameEn: "King's Row",
+    pinyin: 'guo wang da dao',
     type: 'hybrid',
     recommendedHeroes: ['reinhardt', 'ramattra', 'mauga', 'junker_queen', 'roadhog', 'hazard', 'reaper', 'cassidy', 'symmetra', 'mei', 'junkrat', 'torbjorn', 'brigitte', 'moira', 'lucio', 'lifeweaver', 'ruixi'],
     heroReasons: {
@@ -344,6 +355,7 @@ export const getMapName = (map: Map | undefined | null, language: MapLanguage = 
     id: 'midtown',
     name: '中城',
     nameEn: 'Midtown',
+    pinyin: 'zhong cheng',
     type: 'hybrid',
     recommendedHeroes: ['junker_queen', 'reinhardt', 'hazard', 'ramattra', 'roadhog', 'zarya', 'mei', 'torbjorn', 'junkrat', 'reaper', 'bastion', 'cassidy', 'brigitte', 'lifeweaver', 'ruixi', 'moira', 'lucio'],
     heroReasons: {
@@ -374,6 +386,7 @@ export const getMapName = (map: Map | undefined | null, language: MapLanguage = 
     id: 'numbani',
     name: '努巴尼',
     nameEn: 'Numbani',
+    pinyin: 'nu ba ni',
     type: 'hybrid',
     recommendedHeroes: ['sigma', 'orisa', 'dva', 'winston', 'doomfist', 'jinyu', 'hanzo', 'widowmaker', 'soldier76', 'pharah', 'sojourn', 'ashe', 'ana', 'zenyatta', 'baptiste', 'illari', 'mercy'],
     heroReasons: {
@@ -404,6 +417,7 @@ export const getMapName = (map: Map | undefined | null, language: MapLanguage = 
     id: 'paraiso',
     name: '帕拉伊苏',
     nameEn: 'Paraíso',
+    pinyin: 'pa la yi su',
     type: 'hybrid',
     recommendedHeroes: ['junker_queen', 'roadhog', 'zarya', 'ramattra', 'hazard', 'mauga', 'sombra', 'genji', 'venture', 'tracer', 'ashe', 'freja', 'kiriko', 'lucio', 'feitianmao', 'lifeweaver', 'juno'],
     heroReasons: {
@@ -430,12 +444,53 @@ export const getMapName = (map: Map | undefined | null, language: MapLanguage = 
       en: 'Narrow alleys, multiple paths, wall ride opportunities',
     },
   },
+  {
+    id: 'neon_junction',
+    name: '霓虹枢纽',
+    nameEn: 'Neon Junction',
+    pinyin: 'ni hong shu niu',
+    type: 'hybrid',
+    dimensions: { length: 'short', width: 'narrow', height: 'low', isOutdoor: false, hasHighSecondFloor: false, hasHighWalls: false },
+    recommendedHeroes: ['reinhardt', 'junker_queen', 'ramattra', 'mauga', 'zarya', 'roadhog', 'reaper', 'mei', 'symmetra', 'junkrat', 'bastion', 'torbjorn', 'cassidy', 'brigitte', 'moira', 'lucio', 'kiriko', 'tracer', 'genji', 'venture', 'sombra', 'doomfist', 'winston', 'dva', 'wrecking_ball'],
+    heroReasons: {
+      reinhardt: { zh: '短距离窄通道低屋顶，举盾推进优势大，室内地推首选', en: 'Short narrow low ceiling, shield push strong, top brawl pick indoors' },
+      junker_queen: { zh: '狭窄通道近战输出强', en: 'Strong melee damage in narrow passages' },
+      ramattra: { zh: '天罚形态在狭窄低屋顶区域威力大', en: 'Nemesis Form powerful in narrow low ceiling areas' },
+      mauga: { zh: '狭窄通道双枪火力压制，大体积子弹伤害高', en: 'Dual gun suppression in narrow passages, large hitbox damage' },
+      zarya: { zh: '狭窄通道护盾价值高', en: 'Bubbles high value in narrow passages' },
+      roadhog: { zh: '狭窄通道钩子威胁大', en: 'Hook threat significant in narrow passages' },
+      reaper: { zh: '狭窄通道贴脸输出强，低屋顶短射程优势', en: 'Strong close range in narrow passages, low ceiling short range advantage' },
+      mei: { zh: '狭窄通道冰墙分割，低屋顶短射程优势', en: 'Ice Wall divides narrow passages, low ceiling short range advantage' },
+      symmetra: { zh: '狭窄通道传送门价值高，短射程优势', en: 'Teleporter high value in narrow passages, short range advantage' },
+      junkrat: { zh: '狭窄通道榴弹弹跳伤害高，大体积子弹优势', en: 'High grenade bounce damage in narrow passages, large hitbox advantage' },
+      bastion: { zh: '狭窄通道架点输出，大体积子弹伤害高', en: 'Sentry damage in narrow passages, large hitbox damage' },
+      torbjorn: { zh: '狭窄通道炮台防守', en: 'Turret defense in narrow passages' },
+      cassidy: { zh: '中近距离在狭窄通道作战强', en: 'Strong mid-close range in narrow passages' },
+      brigitte: { zh: '地推阵容核心，狭窄区域近战支援', en: 'Core of brawl comp, melee support in narrow areas' },
+      moira: { zh: '狭窄区域治疗球价值高，短射程优势', en: 'Healing Orb high value in narrow areas, short range advantage' },
+      lucio: { zh: '音障配合地推，墙骑利用地形', en: 'Sound Barrier for brawl, wall ride terrain' },
+      kiriko: { zh: '瞬快速支援狭窄通道', en: 'Swift Step for fast support in narrow passages' },
+      tracer: { zh: '闪现穿梭狭窄通道', en: 'Blink weaving through narrow passages' },
+      genji: { zh: '机动性强，但低屋顶限制爬墙空间', en: 'High mobility, but low ceiling limits wall climb space' },
+      venture: { zh: '穿越地形侧翼进攻', en: 'Terrain traversal for flanking' },
+      sombra: { zh: '绕后骚扰', en: 'Flank and harass' },
+      doomfist: { zh: '低屋顶限制垂直位移，但狭窄通道火箭拳威胁', en: 'Low ceiling limits vertical mobility, but Rocket Punch threat in narrow passages' },
+      winston: { zh: '机动性强，快速转点', en: 'High mobility, fast rotations' },
+      dva: { zh: '推进器机动控制', en: 'Boosters for mobile control' },
+      wrecking_ball: { zh: '低屋顶限制机动空间', en: 'Low ceiling limits mobility space' },
+    },
+    description: {
+      zh: '短视线·窄通道·低屋顶·室内 | 狭窄低屋顶适合盾牌/大体积子弹英雄，地推阵容首选，短射程英雄优势大，低屋顶限制飞行和爬墙英雄',
+      en: 'Short sightlines·Narrow corridors·Low ceiling·Indoor | Narrow low ceiling suits shield/large hitbox heroes, top brawl pick, short range advantage, low ceiling limits flight and wall climb heroes',
+    },
+  },
 
    // 运载目标地图
   {
     id: 'circuit_royal',
     name: '皇家赛道',
     nameEn: 'Circuit Royal',
+    pinyin: 'huang jia sai dao',
     type: 'escort',
     recommendedHeroes: ['orisa', 'sigma', 'jinyu', 'reinhardt', 'junker_queen', 'zarya', 'pharah', 'ashe', 'sojourn', 'widowmaker', 'soldier76', 'hanzo', 'mercy', 'baptiste', 'illari', 'zenyatta', 'ana'],
     heroReasons: {
@@ -466,6 +521,7 @@ export const getMapName = (map: Map | undefined | null, language: MapLanguage = 
     id: 'dorado',
     name: '多拉多',
     nameEn: 'Dorado',
+    pinyin: 'duo la duo',
     type: 'escort',
     recommendedHeroes: ['orisa', 'sigma', 'reinhardt', 'junker_queen', 'jinyu', 'roadhog', 'widowmaker', 'soldier76', 'pharah', 'hanzo', 'ashe', 'sojourn', 'ana', 'zenyatta', 'baptiste', 'illari', 'mercy'],
     heroReasons: {
@@ -496,6 +552,7 @@ export const getMapName = (map: Map | undefined | null, language: MapLanguage = 
     id: 'havana',
     name: '哈瓦那',
     nameEn: 'Havana',
+    pinyin: 'ha wa na',
     type: 'escort',
     recommendedHeroes: ['dva', 'winston', 'doomfist', 'wrecking_ball', 'junker_queen', 'ramattra', 'sombra', 'tracer', 'genji', 'venture', 'ashe', 'junkrat', 'kiriko', 'lucio', 'lifeweaver', 'feitianmao', 'juno'],
     heroReasons: {
@@ -526,6 +583,7 @@ export const getMapName = (map: Map | undefined | null, language: MapLanguage = 
     id: 'junkertown',
     name: '渣客镇',
     nameEn: 'Junkertown',
+    pinyin: 'zha ke zhen',
     type: 'escort',
     recommendedHeroes: ['sigma', 'orisa', 'wrecking_ball', 'winston', 'dva', 'doomfist', 'junkrat', 'ashe', 'cassidy', 'torbjorn', 'sombra', 'venture', 'ana', 'mercy', 'illari', 'baptiste', 'zenyatta'],
     heroReasons: {
@@ -556,6 +614,7 @@ export const getMapName = (map: Map | undefined | null, language: MapLanguage = 
     id: 'rialto',
     name: '里阿尔托',
     nameEn: 'Rialto',
+    pinyin: 'li a er tuo',
     type: 'escort',
     recommendedHeroes: ['ramattra', 'junker_queen', 'roadhog', 'reinhardt', 'hazard', 'mauga', 'sombra', 'sojourn', 'vendetta', 'genji', 'venture', 'ashe', 'moira', 'brigitte', 'ruixi', 'lucio', 'lifeweaver'],
     heroReasons: {
@@ -586,6 +645,7 @@ export const getMapName = (map: Map | undefined | null, language: MapLanguage = 
     id: 'route_66',
     name: '66号公路',
     nameEn: 'Route 66',
+    pinyin: 'liu liu hao gong lu',
     type: 'escort',
     recommendedHeroes: ['reinhardt', 'orisa', 'sigma', 'junker_queen', 'roadhog', 'jinyu', 'widowmaker', 'hanzo', 'soldier76', 'pharah', 'ashe', 'sojourn', 'ana', 'baptiste', 'zenyatta', 'mercy', 'illari'],
     heroReasons: {
@@ -616,6 +676,7 @@ export const getMapName = (map: Map | undefined | null, language: MapLanguage = 
     id: 'gibraltar',
     name: '直布罗陀',
     nameEn: 'Watchpoint: Gibraltar',
+    pinyin: 'zhi bu luo tuo',
     type: 'escort',
     recommendedHeroes: ['winston', 'dva', 'wrecking_ball', 'doomfist', 'sigma', 'orisa', 'pharah', 'genji', 'echo', 'tracer', 'freja', 'sojourn', 'lucio', 'feitianmao', 'juno', 'kiriko', 'illari'],
     heroReasons: {
@@ -646,6 +707,7 @@ export const getMapName = (map: Map | undefined | null, language: MapLanguage = 
     id: 'shambali_monastery',
     name: '香巴里寺院',
     nameEn: 'Shambali Monastery',
+    pinyin: 'xiang ba li si yuan',
     type: 'escort',
     recommendedHeroes: ['sigma', 'orisa', 'mauga', 'winston', 'wrecking_ball', 'doomfist', 'pharah', 'hanzo', 'freja', 'echo', 'sojourn', 'soldier76', 'illari', 'zenyatta', 'feitianmao', 'lucio', 'baptiste'],
     heroReasons: {
@@ -678,6 +740,7 @@ export const getMapName = (map: Map | undefined | null, language: MapLanguage = 
     id: 'runasapi',
     name: '鲁纳塞彼',
     nameEn: 'Runasapi',
+    pinyin: 'lu na sai bi',
     type: 'push',
     recommendedHeroes: ['dva', 'doomfist', 'zarya', 'winston', 'junker_queen', 'ramattra', 'genji', 'sombra', 'venture', 'tracer', 'ashe', 'vendetta', 'kiriko', 'lucio', 'wuyang', 'lifeweaver', 'feitianmao'],
     heroReasons: {
@@ -708,6 +771,7 @@ export const getMapName = (map: Map | undefined | null, language: MapLanguage = 
     id: 'colosseo',
     name: '斗兽场',
     nameEn: 'Colosseo',
+    pinyin: 'dou shou chang',
     type: 'push',
     recommendedHeroes: ['reinhardt', 'junker_queen', 'ramattra', 'roadhog', 'mauga', 'hazard', 'reaper', 'junkrat', 'torbjorn', 'bastion', 'mei', 'cassidy', 'brigitte', 'moira', 'lucio', 'ruixi', 'lifeweaver'],
     heroReasons: {
@@ -738,6 +802,7 @@ export const getMapName = (map: Map | undefined | null, language: MapLanguage = 
     id: 'esperanca',
     name: '埃斯佩兰萨',
     nameEn: 'Esperança',
+    pinyin: 'ai si pei lan sa',
     type: 'push',
     recommendedHeroes: ['winston', 'dva', 'jinyu', 'doomfist', 'wrecking_ball', 'orisa', 'tracer', 'genji', 'sojourn', 'sombra', 'venture', 'ashe', 'lifeweaver', 'kiriko', 'juno', 'lucio', 'feitianmao'],
     heroReasons: {
@@ -768,6 +833,7 @@ export const getMapName = (map: Map | undefined | null, language: MapLanguage = 
     id: 'new_queen_street',
     name: '新皇后街',
     nameEn: 'New Queen Street',
+    pinyin: 'xin huang hou jie',
     type: 'push',
     recommendedHeroes: ['junker_queen', 'roadhog', 'hazard', 'ramattra', 'zarya', 'mauga', 'mei', 'sombra', 'venture', 'genji', 'tracer', 'vendetta', 'brigitte', 'ruixi', 'feitianmao', 'kiriko', 'moira'],
     heroReasons: {
@@ -800,6 +866,7 @@ export const getMapName = (map: Map | undefined | null, language: MapLanguage = 
     id: 'antarctic_peninsula',
     name: '南极半岛',
     nameEn: 'Antarctic Peninsula',
+    pinyin: 'nan ji ban dao',
     type: 'flashpoint',
     recommendedHeroes: ['junker_queen', 'roadhog', 'zarya', 'ramattra', 'hazard', 'mauga', 'reinhardt', 'sombra', 'genji', 'venture', 'tracer', 'ashe', 'freja', 'sojourn', 'vendetta', 'kiriko', 'lucio'],
     heroReasons: {
@@ -830,6 +897,7 @@ export const getMapName = (map: Map | undefined | null, language: MapLanguage = 
     id: 'new_junk_city',
     name: '新渣客城',
     nameEn: 'New Junk City',
+    pinyin: 'xin zha ke cheng',
     type: 'flashpoint',
     recommendedHeroes: ['wrecking_ball', 'junker_queen', 'hazard', 'roadhog', 'ramattra', 'doomfist', 'junkrat', 'torbjorn', 'vendetta', 'sombra', 'venture', 'ashe', 'moira', 'lucio', 'zenyatta', 'brigitte', 'ruixi'],
     heroReasons: {
@@ -860,6 +928,7 @@ export const getMapName = (map: Map | undefined | null, language: MapLanguage = 
     id: 'suravasa',
     name: '苏拉瓦萨',
     nameEn: 'Suravasa',
+    pinyin: 'su la wa sa',
     type: 'flashpoint',
     recommendedHeroes: ['dva', 'winston', 'ramattra', 'doomfist', 'zarya', 'orisa', 'genji', 'sombra', 'echo', 'venture', 'tracer', 'ashe', 'kiriko', 'lifeweaver', 'anran', 'lucio', 'juno'],
     heroReasons: {
@@ -890,6 +959,7 @@ export const getMapName = (map: Map | undefined | null, language: MapLanguage = 
     id: 'aatlis',
     name: '阿特利斯',
     nameEn: 'Aatlis',
+    pinyin: 'a te li si',
     type: 'flashpoint',
     recommendedHeroes: ['reinhardt', 'mauga', 'sigma', 'junker_queen', 'roadhog', 'ramattra', 'hanzo', 'pharah', 'bastion', 'reaper', 'junkrat', 'sojourn', 'zenyatta', 'illari', 'brigitte', 'lucio', 'moira'],
     heroReasons: {
