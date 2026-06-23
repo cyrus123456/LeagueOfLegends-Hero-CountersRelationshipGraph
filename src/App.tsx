@@ -722,7 +722,93 @@ const [isMapCopied, setIsMapCopied] = useState(false);
                                       <p className="text-xs text-white">{t('resetMapDefaultTip')}</p>
                                     </TooltipContent>
                                   </Tooltip>
-                                )}
+                              )}
+                              {sortHeroesByRole(map.recommendedHeroes).filter(heroId => !(deletedDefaultHeroes[map.id] || []).includes(heroId)).map(heroId => {
+                                const hero = getHero(heroId);
+                                if (!hero) return null;
+                                if (!hero) return null;
+                                const roleColors = {
+                                  tank: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
+                                  fighter: 'bg-amber-500/20 text-amber-400 border-amber-500/30',
+                                  mage: 'bg-purple-500/20 text-purple-400 border-purple-500/30',
+                                  assassin: 'bg-orange-500/20 text-orange-400 border-orange-500/30',
+                                  marksman: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
+                                  support: 'bg-green-500/20 text-green-400 border-green-500/30',
+                                };
+                                return (
+                                  <div 
+                                    key={heroId} 
+                                    className="flex items-start gap-4 p-3 rounded-lg bg-slate-700/30 hover:bg-slate-700/50 cursor-pointer transition-all border border-slate-600/30 hover:border-slate-500/50" 
+                                    onClick={(e) => { e.stopPropagation(); setSelectedHeroes([heroId as HeroId]); }}
+                                  >
+                                    <div className="w-8 h-8 rounded-full overflow-hidden border border-slate-700 shadow-md flex-shrink-0 ring-1 ring-cyan-500/30">
+                                      <img src={hero.image} alt="" className="w-full h-full object-cover" />
+                                    </div>
+                                    <div className="flex-1 min-w-0">
+                                      <div className="flex items-center gap-2 flex-wrap">
+                                        <p className="text-sm font-black text-slate-200 tracking-tight">{language === 'zh' ? hero.name : hero.nameEn}</p>
+                                        <span className={`text-[0.625rem] px-1.5 py-0.5 rounded border font-medium ${roleColors[hero.role[0]]}`}>
+                                          {getRoleNames(hero.role, language)}
+                                        </span>
+                                      </div>
+                                      <p className="text-[0.6875rem] text-slate-300 leading-relaxed mt-1">{(map.heroReasons as Record<string, Partial<Record<string, string>>>)[heroId]?.[language] || (map.heroReasons as Record<string, Partial<Record<string, string>>>)[heroId]?.en || ''}</p>
+                                    </div>
+                                    <Button
+                                      variant="ghost"
+                                      size="sm"
+                                      className="h-7 w-7 p-0 text-slate-400 hover:text-red-400 hover:bg-red-500/10"
+                                      onClick={(e) => { e.stopPropagation(); deleteDefaultHero(map.id, heroId); }}
+                                    >
+                                      <Trash2 className="w-3.5 h-3.5" />
+                                    </Button>
+                                  </div>
+                                );
+                              })}
+                              {sortHeroesByRole((customMapHeroes[map.id] || []).map(ch => ch.heroId)).map((heroId) => {
+                                const customHero = (customMapHeroes[map.id] || []).find(ch => ch.heroId === heroId);
+                                if (!customHero) return null;
+                                const hero = getHero(heroId);
+                                if (!hero) return null;
+                                const originalIndex = (customMapHeroes[map.id] || []).findIndex(ch => ch.heroId === heroId);
+                                const roleColors = {
+                                  tank: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
+                                  fighter: 'bg-amber-500/20 text-amber-400 border-amber-500/30',
+                                  mage: 'bg-purple-500/20 text-purple-400 border-purple-500/30',
+                                  assassin: 'bg-orange-500/20 text-orange-400 border-orange-500/30',
+                                  marksman: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
+                                  support: 'bg-green-500/20 text-green-400 border-green-500/30',
+                                };
+                                return (
+                                  <div
+                                    key={`custom-${heroId}`}
+                                    className="flex items-start gap-4 p-3 rounded-lg bg-slate-700/30 hover:bg-slate-700/50 cursor-pointer transition-all border border-cyan-600/30 hover:border-cyan-500/50"
+                                    onClick={(e) => { e.stopPropagation(); setSelectedHeroes([heroId as HeroId]); }}
+                                  >
+                                    <div className="w-8 h-8 rounded-full overflow-hidden border border-slate-700 shadow-md flex-shrink-0 ring-1 ring-cyan-500/30">
+                                      <img src={hero.image} alt="" className="w-full h-full object-cover" />
+                                    </div>
+                                    <div className="flex-1 min-w-0">
+                                      <div className="flex items-center gap-2 flex-wrap">
+                                        <p className="text-sm font-black text-slate-200 tracking-tight">{language === 'zh' ? hero.name : hero.nameEn}</p>
+                                        <span className={`text-[0.625rem] px-1.5 py-0.5 rounded border font-medium ${roleColors[hero.role[0]]}`}>
+                                          {getRoleNames(hero.role, language)}
+                                        </span>
+                                        <Badge variant="outline" className="text-[0.5625rem] px-1 py-0 text-white border-white/50 bg-white/10">
+                                        </Badge>
+                                      </div>
+                                      <p className="text-[0.6875rem] text-slate-300 leading-relaxed mt-1">{customHero.reason}</p>
+                                    </div>
+                                    <Button
+                                      variant="ghost"
+                                      size="sm"
+                                      className="h-7 w-7 p-0 text-slate-400 hover:text-red-400 hover:bg-red-500/10"
+                                      onClick={(e) => { e.stopPropagation(); removeCustomHero(map.id, originalIndex); }}
+                                    >
+                                      <Trash2 className="w-3.5 h-3.5" />
+                                    </Button>
+                                  </div>
+                                );
+                              })}
                               </div>
                               <Badge 
                                 variant="outline" 
@@ -824,92 +910,6 @@ const [isMapCopied, setIsMapCopied] = useState(false);
                                </Tooltip>
                              </div>
                               <div className="max-h-[50vh] overflow-y-auto pr-1 space-y-2">
-                              {sortHeroesByRole(map.recommendedHeroes).filter(heroId => !(deletedDefaultHeroes[map.id] || []).includes(heroId)).map(heroId => {
-                                const hero = getHero(heroId);
-                                if (!hero) return null;
-                                if (!hero) return null;
-                                const roleColors = {
-                                  tank: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
-                                  fighter: 'bg-amber-500/20 text-amber-400 border-amber-500/30',
-                                  mage: 'bg-purple-500/20 text-purple-400 border-purple-500/30',
-                                  assassin: 'bg-orange-500/20 text-orange-400 border-orange-500/30',
-                                  marksman: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
-                                  support: 'bg-green-500/20 text-green-400 border-green-500/30',
-                                };
-                                return (
-                                  <div 
-                                    key={heroId} 
-                                    className="flex items-start gap-4 p-3 rounded-lg bg-slate-700/30 hover:bg-slate-700/50 cursor-pointer transition-all border border-slate-600/30 hover:border-slate-500/50" 
-                                    onClick={(e) => { e.stopPropagation(); setSelectedHeroes([heroId as HeroId]); }}
-                                  >
-                                    <div className="w-8 h-8 rounded-full overflow-hidden border border-slate-700 shadow-md flex-shrink-0 ring-1 ring-cyan-500/30">
-                                      <img src={hero.image} alt="" className="w-full h-full object-cover" />
-                                    </div>
-                                    <div className="flex-1 min-w-0">
-                                      <div className="flex items-center gap-2 flex-wrap">
-                                        <p className="text-sm font-black text-slate-200 tracking-tight">{language === 'zh' ? hero.name : hero.nameEn}</p>
-                                        <span className={`text-[0.625rem] px-1.5 py-0.5 rounded border font-medium ${roleColors[hero.role[0]]}`}>
-                                          {getRoleNames(hero.role, language)}
-                                        </span>
-                                      </div>
-                                      <p className="text-[0.6875rem] text-slate-300 leading-relaxed mt-1">{(map.heroReasons as Record<string, Partial<Record<string, string>>>)[heroId]?.[language] || (map.heroReasons as Record<string, Partial<Record<string, string>>>)[heroId]?.en || ''}</p>
-                                    </div>
-                                    <Button
-                                      variant="ghost"
-                                      size="sm"
-                                      className="h-7 w-7 p-0 text-slate-400 hover:text-red-400 hover:bg-red-500/10"
-                                      onClick={(e) => { e.stopPropagation(); deleteDefaultHero(map.id, heroId); }}
-                                    >
-                                      <Trash2 className="w-3.5 h-3.5" />
-                                    </Button>
-                                  </div>
-                                );
-                              })}
-                              {sortHeroesByRole((customMapHeroes[map.id] || []).map(ch => ch.heroId)).map((heroId) => {
-                                const customHero = (customMapHeroes[map.id] || []).find(ch => ch.heroId === heroId);
-                                if (!customHero) return null;
-                                const hero = getHero(heroId);
-                                if (!hero) return null;
-                                const originalIndex = (customMapHeroes[map.id] || []).findIndex(ch => ch.heroId === heroId);
-                                const roleColors = {
-                                  tank: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
-                                  fighter: 'bg-amber-500/20 text-amber-400 border-amber-500/30',
-                                  mage: 'bg-purple-500/20 text-purple-400 border-purple-500/30',
-                                  assassin: 'bg-orange-500/20 text-orange-400 border-orange-500/30',
-                                  marksman: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
-                                  support: 'bg-green-500/20 text-green-400 border-green-500/30',
-                                };
-                                return (
-                                  <div
-                                    key={`custom-${heroId}`}
-                                    className="flex items-start gap-4 p-3 rounded-lg bg-slate-700/30 hover:bg-slate-700/50 cursor-pointer transition-all border border-cyan-600/30 hover:border-cyan-500/50"
-                                    onClick={(e) => { e.stopPropagation(); setSelectedHeroes([heroId as HeroId]); }}
-                                  >
-                                    <div className="w-8 h-8 rounded-full overflow-hidden border border-slate-700 shadow-md flex-shrink-0 ring-1 ring-cyan-500/30">
-                                      <img src={hero.image} alt="" className="w-full h-full object-cover" />
-                                    </div>
-                                    <div className="flex-1 min-w-0">
-                                      <div className="flex items-center gap-2 flex-wrap">
-                                        <p className="text-sm font-black text-slate-200 tracking-tight">{language === 'zh' ? hero.name : hero.nameEn}</p>
-                                        <span className={`text-[0.625rem] px-1.5 py-0.5 rounded border font-medium ${roleColors[hero.role[0]]}`}>
-                                          {getRoleNames(hero.role, language)}
-                                        </span>
-                                        <Badge variant="outline" className="text-[0.5625rem] px-1 py-0 text-white border-white/50 bg-white/10">
-                                        </Badge>
-                                      </div>
-                                      <p className="text-[0.6875rem] text-slate-300 leading-relaxed mt-1">{customHero.reason}</p>
-                                    </div>
-                                    <Button
-                                      variant="ghost"
-                                      size="sm"
-                                      className="h-7 w-7 p-0 text-slate-400 hover:text-red-400 hover:bg-red-500/10"
-                                      onClick={(e) => { e.stopPropagation(); removeCustomHero(map.id, originalIndex); }}
-                                    >
-                                      <Trash2 className="w-3.5 h-3.5" />
-                                    </Button>
-                                  </div>
-                                );
-                              })}
                               {addingHeroMapId === map.id ? (
                                 <div ref={addHeroFormRef} data-prevent-map-toggle className="flex flex-col gap-2 p-3 rounded-lg bg-slate-700/50 border border-cyan-500/30">
                                   <Select value={newHeroId} onValueChange={(v) => setNewHeroId(v as OwHeroId)}>
