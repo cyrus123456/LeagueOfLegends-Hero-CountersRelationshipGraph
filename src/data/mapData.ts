@@ -7,7 +7,7 @@ export type MapId = 'antarctic_peninsula' | 'aatlis' | 'blizzard_world' | 'busan
   | 'colosseo' | 'dorado' | 'eichenwalde' | 'esperanca' | 'gibraltar' | 'havana' | 'hollywood'
   | 'ilios' | 'junkertown' | 'kings_row' | 'lijiang' | 'midtown' | 'nepal' | 'new_junk_city'
   | 'new_queen_street' | 'numbani' | 'oasis' | 'paraiso' | 'paris' | 'rialto' | 'route_66'
-  | 'runasapi' | 'samoa' | 'shambali_monastery' | 'suravasa';
+  | 'runasapi' | 'samoa' | 'shambali_monastery' | 'suravasa' | 'neon_junction';
 
 export interface Map {
   id: MapId;
@@ -450,7 +450,6 @@ export const getMapName = (map: Map | undefined | null, language: MapLanguage = 
     nameEn: 'Neon Junction',
     pinyin: 'ni hong shu niu',
     type: 'hybrid',
-    dimensions: { length: 'short', width: 'narrow', height: 'low', isOutdoor: false, hasHighSecondFloor: false, hasHighWalls: false },
     recommendedHeroes: ['reinhardt', 'junker_queen', 'ramattra', 'mauga', 'zarya', 'roadhog', 'reaper', 'mei', 'symmetra', 'junkrat', 'bastion', 'torbjorn', 'cassidy', 'brigitte', 'moira', 'lucio', 'kiriko', 'tracer', 'genji', 'venture', 'sombra', 'doomfist', 'winston', 'dva', 'wrecking_ball'],
     heroReasons: {
       reinhardt: { zh: '短距离窄通道低屋顶，举盾推进优势大，室内地推首选', en: 'Short narrow low ceiling, shield push strong, top brawl pick indoors' },

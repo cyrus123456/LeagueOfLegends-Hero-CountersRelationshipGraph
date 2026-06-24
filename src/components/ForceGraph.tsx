@@ -36,7 +36,6 @@ import * as d3 from 'd3';
 import {
   Check,
   ChevronLeft,
-  ChevronRight,
   Copy,
   FileText,
   HelpCircle,
@@ -191,7 +190,6 @@ const ForceGraph = ({
   const [isIntroOpen, setIsIntroOpen] = useState(false);
   const [heroSnapshots, setHeroSnapshots] = useState<{ id: string; heroIds: HeroId[]; timestamp: number }[]>([]);
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
-  const [isDetailOpen, setIsDetailOpen] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [isCounterPanelCollapsed, setIsCounterPanelCollapsed] = useState<boolean>(() => {
     const stored = localStorage.getItem('lol-counter-panel-pinned-collapsed');
