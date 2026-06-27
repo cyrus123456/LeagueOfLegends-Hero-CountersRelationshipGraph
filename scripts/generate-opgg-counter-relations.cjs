@@ -71,6 +71,7 @@ for (const champion of hardData.champions) {
       reasonsMap[key] = {
         reasonZh: `对线胜率 ${reverseWinrate.toFixed(2)}%`,
         reasonEn: `Win rate ${reverseWinrate.toFixed(2)}%`,
+        games: counter.games ?? null,
       };
     }
   }
@@ -101,6 +102,7 @@ for (const champion of easyData.champions) {
       reasonsMap[key] = {
         reasonZh: `对线胜率 ${winrate.toFixed(2)}%`,
         reasonEn: `Win rate ${winrate.toFixed(2)}%`,
+        games: counter.games ?? null,
       };
     }
   }
@@ -150,13 +152,15 @@ import type { Language } from '@/i18n';
 export interface CounterReasonData {
   reasonZh: string;
   reasonEn: string;
+  games: number | null;
 }
 
 export const counterReasons: Record<string, CounterReasonData> = {
 `;
 for (const key of Object.keys(reasonsMap).sort()) {
   const data = reasonsMap[key];
-  counterReasonsTs += `  '${key}': {\n    reasonZh: '${escapeStr(data.reasonZh)}',\n    reasonEn: '${escapeStr(data.reasonEn)}'\n  },\n`;
+  const gamesStr = data.games !== null ? data.games : 'null';
+  counterReasonsTs += `  '${key}': {\n    reasonZh: '${escapeStr(data.reasonZh)}',\n    reasonEn: '${escapeStr(data.reasonEn)}',\n    games: ${gamesStr}\n  },\n`;
 }
 counterReasonsTs += `};
 
