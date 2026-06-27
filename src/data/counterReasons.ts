@@ -7241,5 +7241,15 @@ export function getCounterReason(sourceId: string, targetId: string, language: L
   const key = `${sourceId}-${targetId}`;
   const data = counterReasons[key];
   if (!data) return '';
-  return language === 'zh' ? data.reasonZh : data.reasonEn;
+  const reason = language === 'zh' ? data.reasonZh : data.reasonEn;
+  if (data.games !== null && data.games > 0) {
+    const gamesLabel = language === 'zh' ? ` (${data.games.toLocaleString()} 场)` : ` (${data.games.toLocaleString()} games)`;
+    return reason + gamesLabel;
+  }
+  return reason;
+}
+
+export function getCounterReasonData(sourceId: string, targetId: string): CounterReasonData | null {
+  const key = `${sourceId}-${targetId}`;
+  return counterReasons[key] || null;
 }
