@@ -56,6 +56,7 @@ import {
   ZoomOut
 } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { cn } from '@/lib/utils';
 
 interface NodeDatum extends d3.SimulationNodeDatum {
   id: HeroId;
@@ -188,6 +189,9 @@ const ForceGraph = ({
   const [activeCounterTab, setActiveCounterTab] = useState<'counteredBy' | 'counters' | 'synergy'>('counteredBy');
   const [isCopied, setIsCopied] = useState(false);
   const [isIntroOpen, setIsIntroOpen] = useState(false);
+  // 多选提示元素的可见状态与倒计时计时器
+  const [isMultiSelectHintVisible, setIsMultiSelectHintVisible] = useState(false);
+  const multiSelectHintTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [heroSnapshots, setHeroSnapshots] = useState<{ id: string; heroIds: HeroId[]; timestamp: number }[]>([]);
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -225,6 +229,37 @@ const ForceGraph = ({
       });
     }
   }, [selectedHeroes]);
+
+  // 多选提示：当有英雄被选中时，从下向上滑入显示；3秒后再向下滑出到搜索框后隐藏
+  // 依赖选中英雄ID列表的JSON字符串，切换不同英雄时即使数量仍为1也会重新触发动画
+  const selectedHeroesKey = JSON.stringify(selectedHeroes);
+  useEffect(() => {
+    // 清理上一个计时器，避免内存泄漏与重复触发
+    if (multiSelectHintTimerRef.current) {
+      clearTimeout(multiSelectHintTimerRef.current);
+      multiSelectHintTimerRef.current = null;
+    }
+
+    if (selectedHeroes.length === 1) {
+      // 触发位移动画：从下向上
+      setIsMultiSelectHintVisible(true);
+      // 倒计时3秒后隐藏
+      multiSelectHintTimerRef.current = setTimeout(() => {
+        setIsMultiSelectHintVisible(false);
+        multiSelectHintTimerRef.current = null;
+      }, 3000);
+    } else {
+      setIsMultiSelectHintVisible(false);
+    }
+
+    // 组件卸载或依赖变化时销毁计时器
+    return () => {
+      if (multiSelectHintTimerRef.current) {
+        clearTimeout(multiSelectHintTimerRef.current);
+        multiSelectHintTimerRef.current = null;
+      }
+    };
+  }, [selectedHeroesKey, selectedHeroes.length]);
 
   // 自定义克制关系状态
   const [customCounterRelations, setCustomCounterRelations] = useState<CustomCounterRelation[]>([]);
@@ -2670,8 +2705,22 @@ const ForceGraph = ({
       <svg ref={svgRef} className="w-full h-full cursor-move force-graph-container" style={{ background: 'transparent' }} onWheel={(e) => e.stopPropagation()} onMouseDown={(e) => { if (e.button === 1) { e.preventDefault(); } }} />
 
       {/* 搜索框 + 历史记录按钮 - 整体居中，按钮在搜索框右侧 */}
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 flex items-center gap-2 pointer-events-none">
-        <div className="relative w-80 pointer-events-auto">
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2 pointer-events-none">
+        <div
+          className={cn(
+            "text-[0.625rem] text-yellow-400 bg-slate-800/60 backdrop-blur-md px-2 py-1 rounded border border-slate-700 whitespace-nowrap shadow-lg pointer-events-auto transition-all duration-500 ease-out",
+            // 位移动画：从下向上滑入显示；3秒后向下滑出隐藏（藏到搜索框后面）
+            selectedHeroes.length === 1
+              ? (isMultiSelectHintVisible
+                  ? "translate-y-0 opacity-100"
+                  : "translate-y-8 opacity-0 pointer-events-none")
+              : "hidden"
+          )}
+        >
+          {t('multiSelectHint')}
+        </div>
+        <div className="flex items-center gap-2 relative z-10">
+          <div className="relative w-80 pointer-events-auto">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-white z-10" />
           <Input
             type="text"
@@ -2772,6 +2821,7 @@ const ForceGraph = ({
             </Card>
           </PopoverContent>
           </Popover>
+          </div>
         </div>
       </div>
     </div>
